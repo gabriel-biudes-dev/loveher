@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para o Amor da Minha Vida</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cinzel', serif;
+      background-color: #0d0d0d;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      max-width: 900px;
+    }
+
+    .message-box {
+  background: rgba(255, 255, 255, 0.1); /* Agora com transparência */
+  border: 2px solid #fff;
+  padding: 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.9);
+  transition: all 0.8s ease;
+  max-width: 75%;
+  width: auto;
+  margin: 0 auto;
+  animation: growWidth 0.8s ease;
+}
+
+    @keyframes growWidth {
+      from {
+        transform: scaleX(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scaleX(1);
+        opacity: 1;
+      }
+    }
+
+    #message {
+  min-height: 6em;
+  white-space: pre-wrap;
+  opacity: 0;
+  font-size: 2.8rem;
+  letter-spacing: 0.5px;
+  transition: opacity 1s ease-in-out;
+  line-height: 2.5rem;
+  text-shadow: 2px 2px 5px #000, -1px -1px 5px #000, 1px 1px 5px #000; /* Borda mais espessa para reforçar o texto */
+}
+
+    .next-button {
+      margin-top: 2rem;
+      background: linear-gradient(45deg, #ff2a68, #f05599);
+      border: none;
+      color: #fff;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      border-radius: 0.8rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(255, 80, 153, 0.3);
+    }
+
+    .next-button:hover {
+      background: linear-gradient(45deg, #f05599, #ff2a68);
+      transform: scale(1.05);
+      box-shadow: 0 6px 30px rgba(255, 80, 153, 0.5);
+    }
+
+    .next-button:active {
+      transform: scale(0.98);
+      box-shadow: none;
+    }
+
+    @media (max-width: 600px) {
+      .message-box {
+        padding: 2rem;
+      }
+
+      #message {
+        font-size: 2rem;
+        line-height: 2.2rem;
+      }
+
+      .next-button {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.6rem;
+      }
+    }
+
+    /* Partículas */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particles span {
+      position: absolute;
+      display: block;
+      width: 6px;
+      height: 6px;
+      background: #ffffff;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-10vh) scale(0.2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Som de digitação -->
+  <audio id="type-sound" src="type.mp3" preload="auto"></audio>
+
+  <div class="overlay"></div>
+  <div class="particles" id="particles"></div>
+  <div class="container">
+    <div class="message-box" id="box">
+      <div id="message"></div>
+      <button class="next-button" onclick="nextMessage()">Próximo</button>
+    </div>
+  </div>
+
+  <!-- Música de fundo -->
+  <audio id="bg-music" loop>
+    <source src="young.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    const messages = [
+      "REASONS TO LOVE YOU",
+      "Você é minha luz em dias escuros.",
+      "Amar você é como respirar: natural, necessário, vital.",
+      "Cada momento contigo é uma eternidade que vale a pena viver.",
+      "Quando fecho os olhos, é o seu sorriso que ilumina meus sonhos.",
+      "Mesmo em mundos pós-apocalípticos, eu te escolheria sempre."
+    ];
+
+    const backgrounds = [
+      "https://images.pexels.com/photos/6437089/pexels-photo-6437089.jpeg",
+      "https://images.pexels.com/photos/6437089/pexels-photo-6437089.jpeg",
+      "https://images.pexels.com/photos/18959398/pexels-photo-18959398.jpeg",
+      "https://images.pexels.com/photos/30551121/pexels-photo-30551121.jpeg",
+      "https://images.pexels.com/photos/2220278/pexels-photo-2220278.jpeg",
+      "https://images.pexels.com/photos/31881676/pexels-photo-31881676.jpeg",
+    ];
+
+    let index = 0;
+    let typingInterval = null;
+
+    function nextMessage() {
+      const msgContainer = document.getElementById('message');
+      const box = document.getElementById('box');
+      const audio = document.getElementById('bg-music');
+      const button = document.querySelector('.next-button');
+      const typeSound = document.getElementById('type-sound');
+
+      if (typingInterval) {
+        clearInterval(typingInterval);
+        typingInterval = null;
+      }
+
+      if (audio.paused) {
+        audio.play().catch(err => console.log('Erro ao tocar música:', err));
+      }
+
+      msgContainer.style.opacity = 0;
+
+      setTimeout(() => {
+        msgContainer.innerText = '';
+        if (index >= messages.length) index = 0;
+        const text = messages[index];
+        let i = 0;
+
+        button.disabled = true;
+        button.style.opacity = 0.5;
+        button.style.cursor = 'not-allowed';
+
+        box.classList.remove('grow');
+        void box.offsetWidth;
+        box.classList.add('grow');
+
+        typingInterval = setInterval(() => {
+          msgContainer.innerText += text.charAt(i);
+          i++;
+
+          typeSound.currentTime = 0;
+          typeSound.play().catch(err => console.log('Erro ao tocar som de digitação:', err));
+
+          if (i >= text.length) {
+            clearInterval(typingInterval);
+            typingInterval = null;
+            button.disabled = false;
+            button.style.opacity = 1;
+            button.style.cursor = 'pointer';
+          }
+        }, 50);
+
+        document.body.style.backgroundImage = `url('${backgrounds[index % backgrounds.length]}')`;
+        msgContainer.style.opacity = 1;
+        index++;
+      }, 800);
+    }
+
+    window.onload = () => {
+      nextMessage();
+      generateParticles();
+      const audio = document.getElementById('bg-music');
+      audio.volume = 0.2; // Define o volume para 50%
+    };
+
+    function generateParticles() {
+      const particleContainer = document.getElementById('particles');
+      for (let i = 0; i < 100; i++) {
+        const span = document.createElement('span');
+        span.style.left = `${Math.random() * 100}%`;
+        span.style.animationDuration = `${4 + Math.random() * 6}s`;
+        span.style.animationDelay = `${Math.random() * 5}s`;
+        span.style.opacity = Math.random();
+        span.style.width = span.style.height = `${Math.random() * 4 + 2}px`;
+        particleContainer.appendChild(span);
+      }
+    }
+  </script>
+</body>
+</html>
